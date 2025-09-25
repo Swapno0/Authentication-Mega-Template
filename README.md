@@ -1,16 +1,16 @@
-# React + Vite
+This project is a continuation of my Mega-Backend-Template. This project is even better than that template. There were some problems in out Backend Template project, that has been solved her. Not only that, some more features are also added here. The frontend is minimalistic here because our main focus was backend functionalities. The following functionalities are present here ----
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+1. Full functional Express backend. Basically what we want in an express backend - Supabase(PostgreSQL) connection with queries, proper routes and controllers, backend data handling with middlewares (JS obj, url, form, file all are handled), on that note - multer middleware setup, custom ApiResponse and ApiError with errorHandler middleware such that all responses from backend are in the form of JSON, cloudinary utility, asyncHandler and all other assorted middlewares and packages.
 
-Currently, two official plugins are available:
+2. JWT - cookie based authentication
+3. Forget password with OTP verification. Used Nodemailer.
+4. OAuth2.0 google setup.
+5. proper use of .env file. So now you can deploy it and it will work fine.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
-
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Again, in the frontend, extensive work was not done, but some functinoalities are present,
+1. showing data based on authentication. Mainly login to see more in Home page
+2. Proper use of react router dom and tailwind css
+3. Login, Signup, Forget password - all are handled with react hook form
+4. After a response is got from backend, then whether to show that data (saved in a state) or go to another page(via useNavigate hook of react router dom) is achieved
+5. proper use of .env file. So now you can deploy it and it will work fine.
