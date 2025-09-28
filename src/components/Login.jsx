@@ -11,6 +11,12 @@ function Login() {
   const googleSigninHandler = async () => {
     window.location.href = `${server}/user/google`
   }
+  const githubSigninHandler = async () => {
+    window.location.href = `${server}/user/github`
+  }
+  const facebookSigninHandler = async () => {
+    window.location.href = `${server}/user/facebook`
+  }
 
   const [backendErrorMessage, setBackendErrorMessage] = useState("")
 
@@ -48,8 +54,8 @@ function Login() {
     <>
       <div className='w-max mx-auto flex flex-col'>
         <button onClick={googleSigninHandler} className='mt-16 bg-blue-400 text-white p-2 rounded-md shadow-blue-200 hover:bg-blue-500 cursor-pointer transform transition-transform duration-500 ease-in-out hover:-translate-y-1'>Sign In Using Google</button>
-        <button className='mt-4 bg-black text-white p-2 rounded-md shadow-blue-200 cursor-pointer transform transition-transform duration-500 ease-in-out hover:-translate-y-1'>Sign In Using GitHub</button>
-        <button className='mt-4 bg-blue-800 text-white p-2 rounded-md shadow-blue-200 hover:bg-blue-900 cursor-pointer transform transition-transform duration-500 ease-in-out hover:-translate-y-1'>Sign In Using FaceBook</button>
+        <button onClick={githubSigninHandler} className='mt-4 bg-black text-white p-2 rounded-md shadow-blue-200 cursor-pointer transform transition-transform duration-500 ease-in-out hover:-translate-y-1'>Sign In Using GitHub</button>
+        <button onClick={facebookSigninHandler} className='mt-4 bg-blue-800 text-white p-2 rounded-md shadow-blue-200 hover:bg-blue-900 cursor-pointer transform transition-transform duration-500 ease-in-out hover:-translate-y-1'>Sign In Using FaceBook</button>
 
         <div className='border-2 border-s-black p-5 mt-12'>
           <div className='text-center'>Login via email</div>

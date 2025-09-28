@@ -166,6 +166,17 @@ const googleLogin = asyncHandler(async (req,res) => {
 })
 
 
+const githubLogin = asyncHandler(async (req,res) => {
+    console.log(567)
+    res.redirect(process.env.REACT_FRONTEND_URI)
+})
+
+
+const facebookLogin = asyncHandler(async (req,res) => {
+    res.redirect(process.env.REACT_FRONTEND_URI)
+})
+
+
 const OTPSend = asyncHandler(async(req,res) => {
     const OTP = generateOTP()
     const response = await OTPVerificationMail(req.body.reciever,OTP)
@@ -209,7 +220,7 @@ const changepass = asyncHandler(async(req,res)=> {
 
 
 
-export {registerUser,loginUser,logoutUser,googleLogin,OTPSend,OTPVerify,changepass}
+export {registerUser,loginUser,logoutUser,googleLogin,githubLogin,facebookLogin,OTPSend,OTPVerify,changepass}
 
 
 

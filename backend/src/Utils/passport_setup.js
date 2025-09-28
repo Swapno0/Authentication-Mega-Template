@@ -1,5 +1,7 @@
 import passport from "passport"
 import GoogleStrategy from "passport-google-oauth20"
+import GithubStrategy from "passport-github2"
+import FacebookStrategy from "passport-facebook"
 import dotenv from "dotenv"
 dotenv.config({
     path: './.env'
@@ -12,8 +14,8 @@ passport.use(
     new GoogleStrategy(
         {
             callbackURL: "/user/google/redirect",
-            clientID: process.env.OAUTH_CLIENT_ID,
-            clientSecret: process.env.OAUTH_CLIENT_SECRET,
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -27,6 +29,7 @@ passport.use(
                 const checkSql2 = `SELECT * FROM spotify.users WHERE email = $1 and googleid is null`;
                 const checkParams2 = [profile._json.email];
                 const existedUser2 = await pool.query(checkSql2, checkParams2);
+                // Instead of this, update the google id column of this user and log him in.
                 if (existedUser2.rows.length == 1) return done(null, {emailAlreadyExists:true});
 
 
@@ -55,6 +58,37 @@ passport.use(
         }
     )
 );
+
+
+
+passport.use(
+    new GithubStrategy(
+        {
+            callbackURL: "/user/github/redirect",
+            clientID: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            console.log(profile)
+            done(null,{user:"yooo"})
+        }
+    )
+)
+
+
+passport.use(
+    new FacebookStrategy(
+        {
+            callbackURL: "/user/facebook/redirect",
+            clientID: process.env.FACEBOOK_APP_ID,
+            clientSecret: process.env.FACEBOOK_APP_SECRET,
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            console.log(profile)
+            done(null,{user:"sheeiii"})
+        }
+    )
+)
 
 
 export default passport

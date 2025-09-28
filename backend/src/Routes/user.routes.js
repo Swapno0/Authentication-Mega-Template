@@ -1,5 +1,5 @@
 import {Router} from "express"
-import { changepass, googleLogin, loginUser, logoutUser, OTPSend, OTPVerify, registerUser } from "../Controllers/user.controller.js"
+import { changepass, facebookLogin, githubLogin, googleLogin, loginUser, logoutUser, OTPSend, OTPVerify, registerUser } from "../Controllers/user.controller.js"
 import { verifyJWT } from "../Middlewares/auth.middleware.js"
 import passport from "passport"
 import { upload } from "../Middlewares/multer.middleware.js"
@@ -30,6 +30,22 @@ router.get('/google', passport.authenticate('google',{
     session:false
 }))
 router.get('/google/redirect', passport.authenticate('google',{session:false}),googleLogin)
+
+
+/* Route for github sign in */
+router.get('/github', passport.authenticate('github',{
+    scope:['profile'],
+    session:false
+}))
+router.get('/github/redirect', passport.authenticate('github',{session:false}),githubLogin)
+
+
+/* Route for github sign in */
+router.get('/facebook', passport.authenticate('facebook',{
+    scope:['profile'],
+    session:false
+}))
+router.get('/facebook/redirect', passport.authenticate('facebook',{session:false}),facebookLogin)
 
 
 /* OTP sending via email */
