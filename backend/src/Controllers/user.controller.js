@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { ApiResponse } from "../Utils/ApiResponse.js";
 import { OTPVerificationMail } from "../Utils/mail.js";
+import fs from "fs"
 
 
 
@@ -41,17 +42,23 @@ const registerUser = asyncHandler(async (req,res) => {
     if (username === "" ) throw new ApiError(400,"Username is required")
     if (email === "") throw new ApiError(400,"Email is required")
     if (password === "") throw new ApiError(400,"Password is required")
-    
+        
+
+    // // take files (avatar,coverphoto etc)
+    const avatarLocalPath = req.files?.avatar[0]?.path
+    if (!avatarLocalPath) throw new ApiError(400,"Avatar is required")
+
+
     // // check existed user
     const sql = `SELECT * FROM spotify.users
                 WHERE email = $1`
     const parameters = [email]
     const existedUser = await pool.query(sql,parameters)
-    if (existedUser.rows.length != 0) throw new ApiError(409,"An user already exists with the same EMAIL")
+    if (existedUser.rows.length != 0) {
+        fs.unlinkSync(avatarLocalPath)
+        throw new ApiError(409,"An user already exists with the same EMAIL")
+    } 
 
-    // // take files (avatar,coverphoto etc)
-    const avatarLocalPath = req.files?.avatar[0]?.path
-    if (!avatarLocalPath) throw new ApiError(400,"Avatar is required")
 
     // // upload the files to cloudinary
     const avatar = await uploader(avatarLocalPath)
@@ -150,7 +157,7 @@ const googleLogin = asyncHandler(async (req,res) => {
 
     // see if emailAlready exists or not.
     // YES, THIS WILL SHOW YOU A JSON RESPONSE, NOT YOUR FRONTEND. WHEN YOU REACH THIS JSON RESPONSE, JUST CLICK BACK OF BROWSER TO GO TO YOUR FRONTEND.
-    if (savedUser.emailAlreadyExists) throw new ApiError(400,"User with this email already exists")
+    // if (savedUser.emailAlreadyExists) throw new ApiError(400,"User with this email already exists")
 
     // Generate Token.
     const token = generateAccessToken(savedUser.email)
