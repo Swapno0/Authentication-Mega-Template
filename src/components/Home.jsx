@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 function Home() {
   const server = import.meta.env.VITE_BACKEND
 
-  const [data,setData] = useState([])
+  const [data,setData] = useState(null)
 
   const getInfo = async()=> {
     const response = await fetch(`${server}/getInfo`,{
