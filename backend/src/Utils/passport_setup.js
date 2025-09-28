@@ -30,18 +30,27 @@ passport.use(
                 const checkParams2 = [profile._json.email];
                 const existedUser2 = await pool.query(checkSql2, checkParams2);
                 // Instead of this, update the google id column of this user and log him in.
-                if (existedUser2.rows.length == 1) return done(null, {emailAlreadyExists:true});
+                // if (existedUser2.rows.length == 1) return done(null, {emailAlreadyExists:true});
+                if (existedUser2.rows.length == 1) {
+                    const updateSql = `UPDATE spotify.users
+                                        SET googleid = $1
+                                        WHERE email = $2`
+                    const updateParams = [profile.id, profile._json.email]
+                    const updateUser = await pool.query(updateSql, updateParams)
+                }
+                else {
+                    // 3. Save user to DB and return new row
+                    const avatar = await uploader2(profile._json.picture)
+                    const insertSql = `
+              INSERT INTO spotify.users (username, email, googleid,avatar)
+              VALUES ($1, $2, $3, $4)
+            `;
+                    const insertParams = [profile.displayName, profile._json.email, profile.id, avatar.url];
+                    const newUser = await pool.query(insertSql, insertParams);
+                }
 
 
-                // 3. Save user to DB and return new row
-                const avatar = await uploader2(profile._json.picture)
-                const insertSql = `
-          INSERT INTO spotify.users (username, email, googleid,avatar)
-          VALUES ($1, $2, $3, $4)
-        `;
-                const insertParams = [profile.displayName, profile._json.email, profile.id, avatar.url];
-                const newUser = await pool.query(insertSql, insertParams);
-                
+
 
                 // 4. Check if user created.
                 const sql3 = `SELECT USERNAME,EMAIL,avatar FROM spotify.users
@@ -70,7 +79,7 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             console.log(profile)
-            done(null,{user:"yooo"})
+            done(null, { user: "yooo" })
         }
     )
 )
@@ -85,7 +94,7 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             console.log(profile)
-            done(null,{user:"sheeiii"})
+            done(null, { user: "sheeiii" })
         }
     )
 )
