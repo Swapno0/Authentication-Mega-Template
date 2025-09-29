@@ -7,12 +7,15 @@ function DarkLightModeTogglerBtn() {
 
     useEffect(() => {
         const storedTheme = localStorage.getItem("theme")
-        document.querySelector("html").setAttribute("data-theme", storedTheme)
-        setTheme(storedTheme)
-}, [])
+        if(storedTheme){
+            document.querySelector("html").setAttribute("data-theme", storedTheme)
+            setTheme(storedTheme)
+        }
+        else document.querySelector("html").setAttribute("data-theme", "light") 
+    }, [])
 
     const modeChanger = async () => {
-        const newTheme = (theme == "light" ? "dark" : "light")
+        const newTheme = (theme == "dark" ? "light" : "dark")
         setTheme(newTheme)
         document.querySelector("html").setAttribute("data-theme", newTheme)
         localStorage.setItem("theme", newTheme)
@@ -37,7 +40,7 @@ function DarkLightModeTogglerBtn() {
                 <path
                     d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
             </svg>
-            <input type="checkbox" checked={(theme=="dark"?true:false)} value="synthwave" className="toggle theme-controller" onClick={modeChanger} />
+            <input type="checkbox" checked={(theme == "dark" ? true : false)}  className="toggle theme-controller" onClick={modeChanger} />
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
