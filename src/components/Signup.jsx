@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { ToastContainer, toast } from 'react-toastify'
 
 const server = import.meta.env.VITE_BACKEND
 
@@ -12,7 +13,6 @@ function Signup() {
     formState: { errors, isSubmitting }
   } = useForm()
 
-  const [backendErrorMessage, setBackendErrorMessage] = useState("")
 
   const navigate = useNavigate()
 
@@ -30,8 +30,14 @@ function Signup() {
     })
     let r = await response.json()
 
-    if(r.success) navigate('/')
-    else setBackendErrorMessage(r.message)
+    if (r.success) navigate('/')
+    else {
+      // setBackendErrorMessage(r.message)
+      const msgShow = () => toast.error(r.message)
+      msgShow()
+    }
+
+
   }
 
 
@@ -40,40 +46,66 @@ function Signup() {
 
   return (
     <>
+      <ToastContainer className='mt-20'
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        type="error"
+        theme='dark'
+      />
       <div className='w-max mx-auto flex flex-col'>
-        <div className='border-2 border-s-black p-5 mt-12'>
-          <div className='text-center'>SignUp Form</div>
-          {isSubmitting && <div>Loading...</div> }
-          {backendErrorMessage && <div className='text-red-600'>{backendErrorMessage}</div> }
-          <form className='flex flex-col gap-2 mt-5 items-center' action="" onSubmit={handleSubmit(submitFunc)}>
-            <input className='bg-gray-500 text-black border-none outline-none px-2 py-3 rounded-md' type="text" placeholder='username' {...register("username", {
+        {isSubmitting && <span className="loading loading-dots loading-xl"></span>}
+        <form className='mt-14' action="" onSubmit={handleSubmit(submitFunc)}>
+          <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+            <legend className="fieldset-legend">Sign Up</legend>
+
+
+            <label className="label">Username</label>
+            <input className='input' type="text" placeholder='username' {...register("username", {
               required: { value: true, message: "Username is required" },
               maxLength: { value: 15, message: "Too long" }
             })}
             />
 
-            <input className='bg-gray-500 text-black border-none outline-none px-2 py-3 rounded-md' type="text" placeholder='email' {...register("email", {
+
+            <label className="label">Email</label>
+            <input className='input' type="email" placeholder='email' {...register("email", {
               required: { value: true, message: "Email is required" }
             })}
             />
 
-            <input className='bg-gray-500 text-black border-none outline-none px-2 py-3 rounded-md' type="password" placeholder='password' {...register("password", {
+
+            <label className="label">Password</label>
+            <input className='input' type="password" placeholder='password' {...register("password", {
               required: { value: true, message: "Password is required" }
             })}
             />
 
-            <input className=' bg-gray-500 text-black border-none outline-none px-2 py-2 rounded-md' type="file" placeholder='avatar' {...register("avatar", {
-              required: { value: true, message: "Avatar is required" }
-            })}
-            />
 
-            <button className=' w-30 p-3 rounded-3xl bg-pink-500 hover:bg-pink-600 font-bold cursor-pointer' disabled={isSubmitting} type='submit'> Submit </button>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Pick a file</legend>
+              <input className='file-input' type="file" placeholder='avatar' {...register("avatar", {
+                required: { value: true, message: "Avatar is required" }
+              })}
+              />
+              <label className="label">Max size 2MB</label>
+            </fieldset>
 
-          </form>
+
+
+            <button className='btn btn-neutral mt-4' disabled={isSubmitting} type='submit'> Submit </button>
+
+          </fieldset>
           {errors.username && <div className='text-red-700'>*{errors.username.message}</div>}
           {errors.email && <div className='text-red-700'>*{errors.email.message}</div>}
           {errors.password && <div className='text-red-700'>*{errors.password.message}</div>}
-        </div>
+        </form>
       </div>
     </>
   )

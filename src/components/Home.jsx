@@ -24,15 +24,18 @@ function Home() {
 
   return (
     <>
-    <div className='w-max mx-auto mt-20'>
+    <div className='w-max mx-auto mt-20 flex flex-col gap-5'>
       {data?
+      <>
       <button>
         <img src={data?.avatar} alt="" width="250px" height="250px"/>
         <div className='mt-5 p-5  bg-orange-400 rounded-3xl flex flex-col gap-5'>
           <div>{data?.username}</div>
           <div>{data?.email}</div>
         </div>
-      </button> 
+      </button>
+      <button className="btn">Default</button> 
+      </>
       :
       <div>You need to login first to use your dashboard</div>
     }
