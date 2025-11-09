@@ -8,7 +8,7 @@ This project is a continuation of my Mega-Backend-Template. This project is even
 5. proper use of .env file. So now you can deploy it and it will work fine.
 
 
-Again, in the frontend, extensive work was not done, but some functinoalities are present,
+Again, in the frontend, extensive work was not done, but some functionalities are present,
 1. showing data based on authentication. Mainly login to see more in Home page
 2. Proper use of react router dom and tailwind css
 3. Login, Signup, Forget password - all are handled with react hook form
